@@ -1,2 +1,3 @@
-this is express developed shopping cart application
-it uses mogodb as the database
+This is express developed shopping cart application,which uses mongodb as database
+
+
