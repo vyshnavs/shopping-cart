@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart</title>
+    <link rel="stylesheet" href="/path/to/your/styles.css">
+    <style>
+        body {
+            background-image: url('/path/to/your/background.jpg');
+            background-size: cover;
+            background-position: center;
+            color: #fff;
+            font-family: Arial, sans-serif;
+        }
+        .offers-slider {
+            position: relative;
+            width: 100%;
+            max-width: 1200px;
+            margin: 20px auto;
+            overflow: hidden;
+        }
+        .offer-slide .buy-now-button {
+        position:absolute;
+        bottom: 10px; 
+        left: 10px; 
+       z-index: 1; 
+       color: rgb(255, 0, 119);
+       
+}
+
+        .offers-slides {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+        .offer-slide {
+            position:relative;
+            min-width: 100%;
+            box-sizing: border-box;
+        }
+         .about-section {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.7);
+            border-radius: 10px;
+        }
+       
+        .about-section {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <section class="offers-slider">
+            <div class="offers-slides">
+                {{#each trendings}}
+                    <div class="offer-slide">
+                        <button onclick="window.location.href='/products'" class="buy-now-button" >shop Now</button> 
+                        <img src="/trending-images/{{this._id}}.jpg" style="width:80rem;height:27rem"/>
+                    </div>
+                {{/each}}
+            </div>
+        </section>
+        
+    </main>
+    
+    <footer>
+        <section class="about-section">
+            <h2>About Us</h2>
+           
+         <p>Welcome to our store! We offer a wide range of products to meet all your needs. Our mission is to provide the best shopping experience possible. Thank you for choosing us!</p>
+         <p>&copy; 2024 Your Store Name. All rights reserved.</p>
+        </section>
+        
+    </footer>
+    
+    <script>
+        
+        let currentIndex = 0;
+        const slides = document.querySelectorAll('.offer-slide');
+        const totalSlides = slides.length;
+
+        function showSlide(index) {
+            const slidesContainer = document.querySelector('.offers-slides');
+            slidesContainer.style.transform = `translateX(${-index * 100}%)`;
+        }
+
+        function nextSlide() {
+            currentIndex = (currentIndex + 1) % totalSlides;
+            showSlide(currentIndex);
+        }
+
+    setInterval(nextSlide, 2000); // Change slide every 2 seconds
+
+        
+    </script>
+</body>
+</html>

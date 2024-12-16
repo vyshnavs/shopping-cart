@@ -1,0 +1,125 @@
+<section>
+    
+    
+    <div class="container">
+        <table class="table mt-5">
+            {{#if products}}
+            
+            
+            <thead>
+                <tr>
+                    
+                    <th scope="col">Item</th>
+                    <th scope="col">Title</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Quantity</th>
+
+
+                </tr>
+            </thead>
+            <tbody>
+                
+                {{#each products}}
+                
+            <tr>
+              
+                <td><img style="width:70px;height: 70px;" src="/product-images/{{this.product._id}}.jpg" alt=""></td>
+                <td>{{this.product.name}}</td>
+                <td>Rs.{{this.product.price}}</td>
+                
+                <td>
+                    
+                    <button class="cart-item-count mr-3" onclick="changeQuantity('{{this._id}}','{{this.product._id}}','{{../user._id}}',-1)">-</button>
+                    <span id="{{this.product._id}}">{{this.quantity}}</span>
+                    <button class="cart-item-count mr-3"  onclick="changeQuantity('{{this._id}}','{{this.product._id}}','{{../user._id}}',1)" >+</button>
+                </td>
+                <td>
+                    
+                    <button class="btn btn-danger"   onclick="alert('Are you sure you want to remove this product?');removeProduct('{{this._id}}','{{this.product._id}}','{{../user._id}}')">Remove</button>
+                </td>
+            </tr>
+            
+            {{/each}}
+            {{else}}
+            <a style="color: red;">EMPTY CART!!</a>
+            {{/if}}
+            </tbody>
+        </table>
+        
+        {{#if cartStatus}}
+        <hr>
+        <div class="foat-right pr-5">
+        
+        <h3 class="float-left mr-5 mr-3 mt-4">TOTAL:Rs.<span id="total">{{total}}</span></h3>
+        
+        <br>
+        <a href="/place-order" class="float-right  mt-5 btn btn-success"><b>Place Order</b></a>
+        </div>
+        
+        {{/if}}
+    </div>
+</section>
+<script>
+    function removeProduct(cartId,proId,userId){
+     $.ajax({
+        url:'/remove-product',
+        
+        data:{
+            user:userId,
+            cart:cartId,
+            product:proId
+           
+            },
+            method:'post',
+            success:(response)=>{
+                
+                if(response.removeStatus){
+            
+             location.reload()
+               
+            }
+             
+            }
+            
+
+        })
+    }
+
+
+    function changeQuantity(cartId,proId,userId,count){
+       
+        let quantity=parseInt(document.getElementById(proId).innerHTML)
+        count=parseInt(count);
+     $.ajax({
+        url:'/change-product-quantity',
+        data:{
+            user:userId,
+            cart:cartId,
+            product:proId,
+            count:count,
+            quantity:quantity
+        },
+        method:'post',
+        success:(response)=>{
+            console.log("AJAX response received:", response);
+            if(response.removeStatus){
+               
+               
+             location.reload() 
+                
+            }
+            else{
+                document.getElementById(proId).innerHTML=quantity+count
+                document.getElementById('total').innerHTML=response.total
+
+            }
+             
+    }
+           
+        })
+     }
+
+
+     
+    
+</script>
